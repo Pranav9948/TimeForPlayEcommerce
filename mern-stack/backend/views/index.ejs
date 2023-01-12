@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style >
+
+.center {
+  border: 5px solid;
+  margin: auto;
+  width: 50%;
+  padding: 100px;
+  margin-top: 50px;
+}
+
+input {
+    line-height: 3em;
+    size: 30;
+}
+
+    </style>
+
+<script>
+
+    var status='<%= JSON.stringify(status) %>';
+    console.log("daiii",status)
+    console.log("kkk",JSON.parse(status))
+
+    if(JSON.parse(status)== "verified"){
+
+        if(confirm("Do u want to login")){
+
+            window.location.href="http://localhost:3000/login"
+        }
+    }
+
+</script>
+
+
+
+</head>
+<body>
+    <div class="center">
+    <h1><%=email%></h1>
+    <form action="" method="post">
+
+        <input type="password" name="password" placeholder=" Enter Password"   id="password" > <br> <br>
+        <input type="password" name="confirmPassword" placeholder="confirm your password"    id="confirmPassword" > <br> <br>
+         
+        
+        <input type="submit" > <br>
+
+
+    </form>
+    </div>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-
+const path = require("path");
 const express = require("express");
 
 const apiRouter = require("./routes/apiRoutes");
@@ -14,7 +14,7 @@ const port = 5000;
 
 const httpServer = createServer(app);
 global.io = new Server(httpServer);
-
+app.use(express.static("../frontend/build"));
 
 app.use(fileUpload());
 
@@ -23,6 +23,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended:false}))
 
 app.use("/api", apiRouter);
+
+app.use("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build/index.html"));
+});
 
 app.use((error, req, res, next) => {
   if (process.env.NODE_ENV === "development") {

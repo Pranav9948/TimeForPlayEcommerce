@@ -5,6 +5,13 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+
+// devServer: {
+//   compress: true,
+//   public: 'store-client-nestroia1.c9users.io' // That solved it
+// }
+
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {

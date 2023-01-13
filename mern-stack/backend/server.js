@@ -14,7 +14,7 @@ const port = 5000;
 
 const httpServer = createServer(app);
 global.io = new Server(httpServer);
-app.use(express.static("../frontend/build"));
+app.use(express.static(path.join(__dirname, ("../frontend/build"))));
 
 app.use(fileUpload());
 

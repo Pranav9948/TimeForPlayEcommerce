@@ -11,7 +11,7 @@ const registerUserApiRequest = async (name, lastName, email, password) => {
     password,
   });
   sessionStorage.setItem("userInfo", JSON.stringify(data.userCreated));
-  if (data.success === "User created") window.location.href = "/user";
+  if (data.success === "User created") window.location.href = "/";
   return data;
 };
 

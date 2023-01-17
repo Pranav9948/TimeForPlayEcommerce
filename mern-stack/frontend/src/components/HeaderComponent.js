@@ -24,11 +24,13 @@ const HeaderComponent = () => {
   const { userInfo } = useSelector((state) => state.userRegisterLogin);
   const itemsCount = useSelector((state) => state.cart.itemsCount);
   const { categories } = useSelector((state) => state.getCategories);
-  
+   
 
   const [searchCategoryToggle, setSearchCategoryToggle] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
      const FavProducts = useSelector((state) => state.wishList.FavProducts);
+
+     
 
   const navigate = useNavigate();
 
@@ -111,9 +113,9 @@ const HeaderComponent = () => {
                 className="fs-5 fw-bold ms-2"
               >
                 <NavDropdown.Item
-                  eventKey="/user/my-orders"
+                  eventKey="/my-orders"
                   as={Link}
-                  to="/user/my-orders"
+                  to="/my-orders"
                 >
                   My orders
                 </NavDropdown.Item>
@@ -140,7 +142,8 @@ const HeaderComponent = () => {
                 <LinkContainer to="/wishlist">
                   <Nav.Link disabled>
                     <Badge pill bg="warning">
-                      {0}
+                      
+                      {FavProducts.length}
                     </Badge>
 
                     <span className="fs-5 fw-bold ms-2">Wishlist </span>
@@ -161,9 +164,9 @@ const HeaderComponent = () => {
               <>
                 <LinkContainer to="/wishlist">
                   <Nav.Link>
-                    <Badge pill bg="warning">
+                    {/* <Badge pill bg="warning">
                       {userInfo.name ? FavProducts.length : 0} 
-                    </Badge>
+                    </Badge> */}
 
                     <span className="fs-5 fw-bold ms-2">Wishlist </span>
                   </Nav.Link>

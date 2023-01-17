@@ -12,6 +12,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UserOrderDetailsPageComponent = ({
   userInfo,
@@ -34,9 +35,10 @@ const UserOrderDetailsPageComponent = ({
   const dispatch = useDispatch();
 
   const priceAfterDiscount=useSelector((state)=>state.Discount.discountedPrice)
+  console.log("pp",priceAfterDiscount)
 const cartz = useSelector((state) => state.cart.cartSubtotal);
 
-  
+  console.log("joel",cartz)
 
   const { id } = useParams();
 
@@ -74,6 +76,7 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
           } else if (data.paymentMethod === "cod") {
             setButtonDisabled(true);
             setOrderButtonMessage("Wait for your order. You pay on delivery");
+            setOrderSuccess(true)
           }
         }
       })
@@ -82,34 +85,31 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
 
   const orderHandler = () => {
 
-    setOrderSuccess(true);
+    
     setButtonDisabled(true);
     if (paymentMethod === "pp") {
       setOrderButtonMessage(
         "To pay for your order click one of the buttons below"
       );
       if (!isPaid) {
-        loadPayPalScript(cartSubtotal, cartItems, id, updateStateAfterOrder);
+        loadPayPalScript(priceAfterDiscount,cartSubtotal, cartItems, id, updateStateAfterOrder);
       }
     } else {
       setOrderButtonMessage("Your order was placed. Thank you");
+      
+      
     }
-
-
-
 
   };
 
  
-
-
-
 
   const updateStateAfterOrder = (paidAt) => {
     setOrderButtonMessage("Thank you for your payment!");
     setIsPaid(paidAt);
     setButtonDisabled(true);
     paypalContainer.current.style = "display: none";
+    setOrderSuccess(true);
   };
 
   
@@ -117,48 +117,82 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
   return (
     <Container fluid>
       <Row className="mt-4">
-        <h1>Order Details</h1>
+        <h1 className="ms-3">ORDER DETAILS</h1>
         <Col md={8}>
           <br />
           <Row>
             <Col md={6}>
-              <h2>Shipping</h2>
-              <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
-              <b>Address</b>: {userAddress.address} {userAddress.city}{" "}
-              {userAddress.state} {userAddress.zipCode} <br />
-              <b>Phone</b>: {userAddress.phoneNumber}
+              <ListGroup className="ms-3">
+                <ListGroup.Item>
+                  {" "}
+                  <h2>SHIPPING</h2>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <b>Name</b>: {userInfo.name} {userInfo.lastName}
+                </ListGroup.Item>{" "}
+                <br />
+                <ListGroup.Item>
+                  <b>Address</b>: {userAddress.address} {userAddress.city}{" "}
+                  {userAddress.state} {userAddress.zipCode}{" "}
+                </ListGroup.Item>{" "}
+                <br />
+                <ListGroup.Item>
+                  <b>Phone</b>: {userAddress.phoneNumber}
+                </ListGroup.Item>
+              </ListGroup>
             </Col>
             <Col md={6}>
-              <h2>Payment method</h2>
-              <Form.Select value={paymentMethod} disabled={true}>
-                <option value="pp">PayPal</option>
-                <option value="cod">
-                  Cash On Delivery (delivery may be delayed)
-                </option>
-              </Form.Select>
+              <ListGroup>
+                <ListGroup.Item>
+                  <h2>PAYMENT METHOD</h2>
+                </ListGroup.Item>
+                <Form.Select
+                  className="ms-3 p-2 mt-3 mb-3"
+                  value={paymentMethod}
+                  disabled={true}
+                  style={{ width: "60%" }}
+                >
+                  <option value="pp">PayPal</option>
+                  <option value="cod">
+                    Cash On Delivery (delivery may be delayed)
+                  </option>
+                </Form.Select>
+              </ListGroup>
             </Col>
             <Row>
               <Col>
                 <Alert
-                  className="mt-3"
+                  className="mt-3 ms-4"
                   variant={isDelivered ? "success" : "danger"}
+                  style={{ width: "70%" }}
                 >
                   {isDelivered ? (
                     <>Delivered at {isDelivered}</>
                   ) : (
-                    <>Not delivered</>
+                    <>will be Delivered</>
                   )}
                 </Alert>
               </Col>
               <Col>
-                <Alert className="mt-3" variant={isPaid ? "success" : "danger"}>
-                  {isPaid ? <>Paid on {isPaid}</> : <>Not paid yet</>}
+                <Alert
+                  className="mt-3 ms-3"
+                  variant={isPaid ? "success" : "danger"}
+                  style={{ width: "70%" }}
+                >
+                  {isPaid ? (
+                    <>Paid on {isPaid}</>
+                  ) : (
+                    <> Payment-Method : {paymentMethod}</>
+                  )}
                 </Alert>
               </Col>
             </Row>
           </Row>
           <br />
-          <h2>Order items</h2>
+
+          <ListGroup></ListGroup>
+          <h2 className="ms-3 mb-4">ORDER ITEMS</h2>
+
           <ListGroup variant="flush">
             {cartItems.map((item, idx) => (
               <CartItemComponent item={item} key={idx} orderCreated={true} />
@@ -166,13 +200,13 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
           </ListGroup>
         </Col>
         <Col md={4}>
+          <h2 className="mt-5 fs-1">ORDER SUMMARY</h2>
           <ListGroup>
-            <ListGroup.Item>
-             
-            </ListGroup.Item>
+            <ListGroup.Item></ListGroup.Item>
+            {console.log("subtotal", cartz)}
             <ListGroup.Item>
               Items price (after tax): ₹
-              {priceAfterDiscount ? <>{priceAfterDiscount}</> :<> ₹ {cartz}</>}
+              {priceAfterDiscount.length ? priceAfterDiscount : cartSubtotal}
             </ListGroup.Item>
             <ListGroup.Item>
               Shipping: <span className="fw-bold">included</span>
@@ -184,10 +218,10 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
               Total price:{" "}
               <span className="fw-bold">
                 ₹{" "}
-                {priceAfterDiscount ? (
+                {priceAfterDiscount.length ? (
                   <>{priceAfterDiscount}</>
                 ) : (
-                  <> {cartz}</>
+                  <> {cartSubtotal}</>
                 )}
               </span>
             </ListGroup.Item>
@@ -207,6 +241,25 @@ const cartz = useSelector((state) => state.cart.cartSubtotal);
               <div style={{ position: "relative", zIndex: 1 }}>
                 <div ref={paypalContainer} id="paypal-container-element"></div>
               </div>
+
+              {orderSuccess ? (
+                <>
+                  
+                  {localStorage.removeItem("cart")}
+                  <h2 className="mt-4" style={{ color: "green" }}>
+                    Order Placed Successfully{" "}
+                    <span>
+                      {" "}
+                      <br></br>{" "}
+                      <Link to="/my-orders">
+                        <h4> See Orders</h4>{" "}
+                      </Link>
+                    </span>
+                  </h2>
+                </>
+              ) : (
+                ""
+              )}
             </ListGroup.Item>
           </ListGroup>
         </Col>

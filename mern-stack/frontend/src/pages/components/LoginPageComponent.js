@@ -2,6 +2,7 @@ import { Container, Row, Col, Form, Button, Alert,Card,Image } from "react-boots
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
+import sachin from '../../components/BannerImages/sachin.jpg'
 
 
 
@@ -74,8 +75,9 @@ const LoginPageComponent = ({
       </div>
       <Row className="g-0">
         <Col md={5}>
+          {console.log("sachin",sachin)}
           <Image
-            src="https://cdn.graciousquotes.com/wp-content/uploads/2021/09/Dont-stop-chasing-your-dreams-because-dreams-do-come-true..jpg"
+            src={sachin}
             alt="login form"
             className="rounded-start w-100 "
             height={"100%"}
@@ -89,7 +91,11 @@ const LoginPageComponent = ({
             <h2 className="mt-3">
               {" "}
               <span>
-                <i class="fa-solid fa-users me-4 fs-1" style={{color:"orange"}}></i>Login{" "}
+                <i
+                  class="fa-solid fa-users me-4 fs-1"
+                  style={{ color: "orange" }}
+                ></i>
+                Login{" "}
               </span>{" "}
             </h2>
 

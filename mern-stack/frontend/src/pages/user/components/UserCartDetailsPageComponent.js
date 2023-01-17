@@ -30,6 +30,8 @@ const UserCartDetailsPageComponent = ({cartItems, itemsCount, cartSubtotal, user
     const [couponStatus,setCouponStatus]=useState(false)
     const [orderSuccess,setOrderSuccess]=useState(false)
 
+    console.log(discountedPrice + "wertyhujytre");
+
     const navigate = useNavigate();
     const dispatch=useDispatch()
     
@@ -81,6 +83,9 @@ const UserCartDetailsPageComponent = ({cartItems, itemsCount, cartSubtotal, user
 
     const orderHandler = () => {
 
+      console.log('1');
+
+
       setOrderSuccess(true);
         const orderData = {
           orderTotal: {
@@ -88,6 +93,8 @@ const UserCartDetailsPageComponent = ({cartItems, itemsCount, cartSubtotal, user
             cartSubtotal: discountedPrice ? discountedPrice : cartSubtotal,
           },
           cartItems: cartItems.map((item) => {
+
+             console.log("2");
             return {
               productID: item.productID,
               name: item.name,
@@ -101,15 +108,19 @@ const UserCartDetailsPageComponent = ({cartItems, itemsCount, cartSubtotal, user
         };
         createOrder(orderData)
           .then((data) => {
+             console.log("3");
             if (data) {
-              navigate("/user/order-details/" + data._id);
+              navigate("/order-details/" + data._id);
             }
           })
           .catch((err) => console.log(err));
 
+          if(priceAfterDiscount.length>0){
 
+            console.log("priceAD",priceAfterDiscount)
           removeAppliedCoupon()
 
+          }
          
       
     }
@@ -139,7 +150,9 @@ const removeAppliedCoupon=async()=>{
 
         let amountAfterDiscount = (cartz - (cartz * discount) / 100).toFixed(2);
 
-        console.log("amountAfterDiscount", amountAfterDiscount);
+        console.log("amountAfterDiscount  ", amountAfterDiscount);
+        console.log(discount);
+        console.log(cartz + '  cart');
 
         setDiscountedPrice(amountAfterDiscount);
         console.log("1")
@@ -178,7 +191,7 @@ const removeAppliedCoupon=async()=>{
               <Col>
                 <LinkContainer to="/user">
                   <Button
-                    className="mt-2 mb-4"
+                    className="mt-2 mb-4 ms-3"
                     size="lg"
                     variant="success"
                     type="button"
@@ -187,9 +200,9 @@ const removeAppliedCoupon=async()=>{
                   </Button>
                 </LinkContainer>
               </Col>
-              <h2 className="ms-3">Shipping</h2>
+              <h2 className="ms-2">Shipping</h2>
 
-              <ListGroup className="p-2">
+              <ListGroup className="p-2 ms-1">
                 <ListGroup.Item>
                   <b>Name</b>: {userInfo.name} {userInfo.lastName} <br />
                 </ListGroup.Item>
@@ -206,14 +219,14 @@ const removeAppliedCoupon=async()=>{
             </Col>
 
             <Col md={6}>
-              <h2 style={{ marginTop: "-70px" }} className="ms-3 mb-5">
+              <h2 style={{ marginTop: "-70px" }} className="ms-0 mb-5">
                 {" "}
                 Select Payment Method
               </h2>{" "}
               <Form.Select
                 onChange={choosePayment}
                 style={{ width: "60%" }}
-                className="ms-5"
+                className="ms-4"
               >
                 <option value="pp">PayPal</option>
                 <option value="cod">
@@ -234,7 +247,7 @@ const removeAppliedCoupon=async()=>{
             </Row>
           </Row>
           <br />
-          <h2 className="ms-3 mb-4">Order items</h2>
+          <h2 className="ms-1 mb-4">Order items</h2>
           <ListGroup variant="flush">
             {cartItems.map((item, idx) => (
               <CartItemComponent
@@ -248,7 +261,7 @@ const removeAppliedCoupon=async()=>{
         </Col>
         <Col md={4}>
           <h2 style={{ marginTop: "-50px" }}>Order summary</h2>
-          <ListGroup className="mt-4">
+          <ListGroup className="mt-4 ms-2">
             <ListGroup.Item>
               Items price (after tax):{" "}
               {discountedPrice ? <> {discountedPrice}</> : <>{cartz}</>}
@@ -265,7 +278,7 @@ const removeAppliedCoupon=async()=>{
             </ListGroup.Item>
 
             <ListGroup.Item className="text-success">
-              Discounted price:{" "}
+              Discountedd price:{" "}
               <span className="fw-bold">
                 ₹
                 {discountedPrice ? (
@@ -297,9 +310,10 @@ const removeAppliedCoupon=async()=>{
               </Button>
               <br></br>
             </ListGroup.Item>
-            <Form onClick={couponSubmit}>
+            <Form onSubmit={couponSubmit}>
               <Form.Group className="mb-3 me-5 ms-3" controlId="formBasicEmail">
-                <Form.Control style={{width:'60%'}}
+                <Form.Control
+                  style={{ width: "60%" }}
                   type="text"
                   placeholder="Enter coupon code"
                   onChange={(e) => setCouponz(e.target.value)}
@@ -310,15 +324,15 @@ const removeAppliedCoupon=async()=>{
                 APPLY
               </Button>{" "}
               <br></br>
-              {couponStatus ? (
-                <h3 className="mt-3">
-                  CouponCode: {couponDetails.name} <br></br>
-                  Coupon Discount : {couponDetails.discount}%{" "}
-                </h3>
-              ) : (
-                " "
-              )}
             </Form>
+            {couponStatus ? (
+              <h3 className="mt-3">
+                CouponCode: {couponDetails.name} <br></br>
+                Coupon Discount : {couponDetails.discount}%{" "}
+              </h3>
+            ) : (
+              " "
+            )}
           </ListGroup>
         </Col>
       </Row>

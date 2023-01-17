@@ -27,3 +27,4 @@ export const removeFromCart = (productID, quantity, price) =>  (dispatch, getSta
     })
     localStorage.setItem("cart", JSON.stringify(getState().cart.cartItems));
 }
+;

@@ -8,6 +8,7 @@ import swal from 'sweetalert';
 
 
 import { useState } from "react";
+import { LinkContainer } from "react-router-bootstrap";
 
 const CartPageComponent = ({
   addToCart,
@@ -51,12 +52,12 @@ const CartPageComponent = ({
     
   };
 
-  const saveOrderstoDb = () => {
-    console.log("kk", JSON.stringify(userCart, null, 4));
-    CartPassBackend(userCart);
+  // const saveOrderstoDb = () => {
+  //   console.log("kk", JSON.stringify(userCart, null, 4));
+  //   CartPassBackend(userCart);
 
-    navigate("/cart-details");
-  };
+  //   navigate("/cart-details");
+  // };
 
   return (
     <Container fluid>
@@ -90,18 +91,17 @@ const CartPageComponent = ({
               Price: <span className="fw-bold">₹{cartSubtotal}</span>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Button
-                disabled={cartSubtotal === 0}
-                type="button"
-                onClick={saveOrderstoDb}
-              >
-                Proceed To Checkout
-              </Button>
+              <LinkContainer to='/cart-details'>
+                <Button
+                  disabled={cartSubtotal === 0}
+                  type="button"
+                  // onClick={saveOrderstoDb}
+                >
+                  Proceed To Checkout
+                </Button>
+              </LinkContainer>
             </ListGroup.Item>
           </ListGroup>
-          
-
-            
         </Col>
       </Row>
     </Container>

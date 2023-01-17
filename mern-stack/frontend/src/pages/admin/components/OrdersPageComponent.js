@@ -27,11 +27,10 @@ const OrdersPageComponent = ({ getOrders }) => {
         <AdminLinksComponent />
       </Col>
 
-<Col md={1}>
-</Col>
+      <Col md={1}></Col>
 
       <Col md={9}>
-        <h1 >Orders</h1> 
+        <h1>Orders</h1>
         <Table striped bordered hover responsive className="mt-4">
           <thead>
             <tr>
@@ -45,33 +44,36 @@ const OrdersPageComponent = ({ getOrders }) => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order, idx) => (
-              <tr key={idx}>
-                <td>{idx + 1}</td>
-                <td>
-                  {order.user !== null ? (
-                    <>
-                      {order.user.name} {order.user.lastName}
-                    </>
-                  ) : null}
-                </td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td> </td>
-                <td>
-                  {order.isDelivered ? (
-                    <i className="bi bi-check-lg text-success"></i>
-                  ) : (
-                    <i className="bi bi-x-lg text-danger"></i>
-                  )}
-                </td>
-                <td>{order.paymentMethod}</td>
-                <td>
-                  <Link to={`/admin/order-details/${order._id}`}>
-                    go to order
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {orders
+              .slice(0)
+              .reverse()
+              .map((order, idx) => (
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>
+                    {order.user !== null ? (
+                      <>
+                        {order.user.name} {order.user.lastName}
+                      </>
+                    ) : null}
+                  </td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td> </td>
+                  <td>
+                    {order.isDelivered ? (
+                      <i className="bi bi-check-lg text-success"></i>
+                    ) : (
+                      <i className="bi bi-x-lg text-danger"></i>
+                    )}
+                  </td>
+                  <td>{order.paymentMethod}</td>
+                  <td>
+                    <Link to={`/admin/order-details/${order._id}`}>
+                      go to order
+                    </Link>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </Col>

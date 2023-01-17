@@ -87,15 +87,15 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="*" element="Page not exists 404" />
         </Route>
-        {/* <Route path="/" component={HomePage} />  in previous versions of react-router-dom */}
+        
 
         {/* user protected routes: */}
         <Route element={<ProtectedRoutesComponent admin={false} />}>
           <Route path="/user" element={<UserProfilePage />} />
-          <Route path="/user/my-orders" element={<UserOrdersPage />} />
+          <Route path="/my-orders" element={<UserOrdersPage />} />
           <Route path="/cart-details" element={<UserCartDetailsPage />} />
           <Route
-            path="/user/order-details/:id"
+            path="/order-details/:id"
             element={<UserOrderDetailsPage />}
           />
         </Route>

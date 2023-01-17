@@ -1,4 +1,4 @@
-import { Row, Col, Form } from "react-bootstrap";
+import { Row, Col, Form, Container } from "react-bootstrap";
 import AdminLinksComponent from "../components/admin/AdminLinksComponent";
 import {
   LineChart,
@@ -159,31 +159,29 @@ const AnalyticsPageComponent = ({
         <AdminLinksComponent />
       </Col>
       <Col md={10}>
-        <h1>
-          Black Friday Cumulative Revenue {firstDateToCompare} VS{" "}
-          {secondDateToCompare}
-        </h1>
-        <Form.Group controlId="firstDateToCompare">
-          <Form.Label>Select First Date To Compare</Form.Label>
-          <Form.Control
-            onChange={firstDateHandler}
-            type="date"
-            name="firstDateToCompare"
-            placeholder="First Date To Compare"
-            defaultValue={firstDateToCompare}
-          />
-        </Form.Group>
-        <br />
-        <Form.Group controlId="secondDateToCompare">
-          <Form.Label>Select Second Date To Compare</Form.Label>
-          <Form.Control
-            onChange={secondDateHandler}
-            type="date"
-            name="secondDateToCompare"
-            placeholder="Second Date To Compare"
-            defaultValue={secondDateToCompare}
-          />
-        </Form.Group>
+        <Container>
+          <Form.Group controlId="firstDateToCompare">
+            <Form.Label>Select First Date To Compare</Form.Label>
+            <Form.Control
+              onChange={firstDateHandler}
+              type="date"
+              name="firstDateToCompare"
+              placeholder="First Date To Compare"
+              defaultValue={firstDateToCompare}
+            />
+          </Form.Group>
+          <br />
+          <Form.Group controlId="secondDateToCompare">
+            <Form.Label>Select Second Date To Compare</Form.Label>
+            <Form.Control
+              onChange={secondDateHandler}
+              type="date"
+              name="secondDateToCompare"
+              placeholder="Second Date To Compare"
+              defaultValue={secondDateToCompare}
+            />
+          </Form.Group>
+        </Container>
         <ResponsiveContainer width="100%" height={500}>
           <LineChart
             margin={{

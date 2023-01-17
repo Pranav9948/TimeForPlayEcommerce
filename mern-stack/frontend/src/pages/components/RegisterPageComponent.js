@@ -2,6 +2,7 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
+import { useNavigate } from "react-router-dom";
 const RegisterPageComponent = ({
   registerUserApiRequest,
   reduxDispatch,
@@ -25,6 +26,8 @@ const RegisterPageComponent = ({
     }
   };
 
+  const navigate=useNavigate()
+
   const handleSubmit = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -41,14 +44,20 @@ const RegisterPageComponent = ({
       lastName &&
       form.password.value === form.confirmPassword.value
     ) {
+      
       setRegisterUserResponseState({ loading: true });
       registerUserApiRequest(name, lastName, email, password)
         .then((data) => {
+         
           setRegisterUserResponseState({
             success: data.success,
             loading: false,
           });
+          
           reduxDispatch(setReduxUserState(data.userCreated));
+          
+          navigate('/')
+          
           
         })
         .catch((er) =>

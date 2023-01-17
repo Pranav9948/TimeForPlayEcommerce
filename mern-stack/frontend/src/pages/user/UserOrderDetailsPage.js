@@ -9,11 +9,14 @@ const getOrder = async (orderId) => {
 };
 
 const loadPayPalScript = (
+  priceAfterDiscount,
   cartSubtotal,
   cartItems,
   orderId,
   updateStateAfterOrder
 ) => {
+  console.log("p2", priceAfterDiscount);
+
   loadScript({
     "client-id":
       "ARMFhbrI9qlm1rsHFOtoZVMmW5JqyMBS6LFfIQVTHf-6S7BwruZb0MCby4S74n3huktBXN6GHgK3kw64",
@@ -21,7 +24,13 @@ const loadPayPalScript = (
     .then((paypal) => {
       paypal
         .Buttons(
-          buttons(cartSubtotal, cartItems, orderId, updateStateAfterOrder)
+          buttons(
+            priceAfterDiscount,
+            cartSubtotal,
+            cartItems,
+            orderId,
+            updateStateAfterOrder
+          )
         )
         .render("#paypal-container-element");
     })
@@ -30,18 +39,29 @@ const loadPayPalScript = (
     });
 };
 
-const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
+const buttons = (
+  priceAfterDiscount,
+  cartSubtotal,
+  cartItems,
+  orderId,
+  updateStateAfterOrder
+) => {
+  console.log("p3", priceAfterDiscount);
+  let finalAmount = priceAfterDiscount.length ? priceAfterDiscount : cartSubtotal;
+  let rounded = Math.round(finalAmount)
+  console.log('c3', cartSubtotal)
+  console.log(rounded + "sdfdsfsdf")
   return {
     createOrder: function (data, actions) {
       return actions.order.create({
-        purchase_units: [ 
+        purchase_units: [
           {
             amount: {
-              value: cartSubtotal,
+              value: Number(rounded),
               breakdown: {
                 item_total: {
                   currency_code: "USD",
-                  value: cartSubtotal,
+                  value: Number(rounded),
                 },
               },
             },
@@ -65,7 +85,7 @@ const buttons = (cartSubtotal, cartItems, orderId, updateStateAfterOrder) => {
         var transaction = orderData.purchase_units[0].payments.captures[0];
         if (
           transaction.status === "COMPLETED" &&
-          Number(transaction.amount.value) === Number(cartSubtotal)
+          Number(transaction.amount.value) === Number(rounded)
         ) {
           updateOrder(orderId)
             .then((data) => {
